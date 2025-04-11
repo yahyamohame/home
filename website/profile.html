@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Ya bidane</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            line-height: 1.5;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: #ffffff;
+            padding: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1877f2;
+        }
+
+        .nav-links a {
+            color: #65676b;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.25rem;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background-color: #f0f2f5;
+            color: #1877f2;
+        }
+
+        .nav-links a i {
+            margin-right: 0.5rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 100%;
+            margin: 60px auto 0;
+            padding: 0.5rem;
+        }
+
+        /* Profile Container */
+        .profile-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .profile-header {
+            padding: 2rem;
+            text-align: center;
+            background-color: #ffffff;
+            border-bottom: 1px solid #dddfe2;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
+            background-color: #e4e6eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #65676b;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-avatar i {
+            font-size: 48px;
+        }
+
+        .profile-avatar .upload-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 0.5rem;
+            font-size: 12px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .profile-avatar:hover .upload-overlay {
+            opacity: 1;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .profile-header h2 {
+            color: #1c1e21;
+            font-size: 24px;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Profile Stats */
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 1rem;
+            border-bottom: 1px solid #dddfe2;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat span {
+            display: block;
+            font-size: 24px;
+            font-weight: bold;
+            color: #1877f2;
+        }
+
+        .stat label {
+            color: #65676b;
+            font-size: 14px;
+        }
+
+        /* Profile Posts */
+        .profile-posts {
+            padding: 1rem;
+        }
+
+        .profile-posts h3 {
+            margin-bottom: 1rem;
+            color: #1c1e21;
+        }
+
+        /* Post Styles */
+        .post {
+            background-color: #ffffff;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .post-content {
+            margin-bottom: 1rem;
+            word-wrap: break-word;
+        }
+
+        .post-actions button {
+            background: none;
+            border: none;
+            color: #65676b;
+            cursor: pointer;
+            padding: 0.5rem;
+            margin-right: 1rem;
+            font-size: 1rem;
+        }
+
+        .post-actions button.liked {
+            color: #e41e3f;
+        }
+
+        .post-actions button:hover {
+            color: #1877f2;
+        }
+
+        .post-actions button.liked:hover {
+            color: #e41e3f;
+        }
+
+        /* Comments */
+        .comments {
+            margin-top: 0.5rem;
+            border-top: 1px solid #dddfe2;
+            padding-top: 0.5rem;
+        }
+
+        .comment {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            background-color: #f0f2f5;
+            border-radius: 8px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-brand {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: white;
+                display: flex;
+                justify-content: space-around;
+                padding: 0.5rem;
+                box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links a {
+                padding: 0.5rem;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                font-size: 12px;
+            }
+
+            .nav-links a i {
+                font-size: 1.2rem;
+                margin: 0 0 0.2rem 0;
+            }
+
+            .container {
+                margin-bottom: 60px;
+            }
+
+            .profile-container {
+                border-radius: 0;
+            }
+
+            .profile-header {
+                padding: 1rem;
+            }
+
+            .profile-avatar {
+                width: 80px;
+                height: 80px;
+            }
+
+            .profile-avatar i {
+                font-size: 32px;
+            }
+
+            .profile-stats {
+                padding: 0.75rem;
+            }
+
+            .stat span {
+                font-size: 20px;
+            }
+        }
+
+        /* iOS Fixes */
+        @supports (-webkit-touch-callout: none) {
+            .container {
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+
+            .nav-links {
+                padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Ya bidane</div>
+        <div class="nav-links">
+            <a href="home.html"><i class="fas fa-home"></i> Home</a>
+            <a href="messages.html"><i class="fas fa-envelope"></i> Messages</a>
+            <a href="profile.html" class="active"><i class="fas fa-user"></i> Profile</a>
+            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-container">
+            <div class="profile-header">
+                <label for="profileImage" class="profile-avatar">
+                    <img id="profileImagePreview" src="" alt="Profile" style="display: none;">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="upload-overlay">
+                        <i class="fas fa-camera"></i> Change Photo
+                    </div>
+                </label>
+                <input type="file" id="profileImage" accept="image/*">
+                <h2 id="profileUsername"></h2>
+            </div>
+
+            <div class="profile-stats">
+                <div class="stat">
+                    <span id="postsCount">0</span>
+                    <label>Posts</label>
+                </div>
+                <div class="stat">
+                    <span id="likesCount">0</span>
+                    <label>Likes</label>
+                </div>
+                <div class="stat">
+                    <span id="commentsCount">0</span>
+                    <label>Comments</label>
+                </div>
+            </div>
+
+            <div class="profile-posts">
+                <h3>Your Posts</h3>
+                <div id="userPosts">
+                    <!-- User posts will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        const currentUser = localStorage.getItem('currentUser');
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        }
+
+        // Display username
+        document.getElementById('profileUsername').textContent = currentUser;
+
+        // Handle profile image
+        const profileImage = document.getElementById('profileImage');
+        const profileImagePreview = document.getElementById('profileImagePreview');
+        const defaultIcon = document.querySelector('.profile-avatar i');
+
+        // Load saved profile image
+        const savedImage = localStorage.getItem(`profileImage_${currentUser}`);
+        if (savedImage) {
+            profileImagePreview.src = savedImage;
+            profileImagePreview.style.display = 'block';
+            defaultIcon.style.display = 'none';
+        }
+
+        // Handle image upload
+        profileImage.addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profileImagePreview.src = e.target.result;
+                    profileImagePreview.style.display = 'block';
+                    defaultIcon.style.display = 'none';
+                    // Save image to localStorage
+                    localStorage.setItem(`profileImage_${currentUser}`, e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Sample posts data (in real app, this would come from a server)
+        const posts = [];
+
+        // Calculate and display stats
+        const userPosts = posts.filter(post => post.user === currentUser);
+        const totalLikes = userPosts.reduce((sum, post) => sum + post.likes, 0);
+        const totalComments = userPosts.reduce((sum, post) => sum + post.comments.length, 0);
+
+        document.getElementById('postsCount').textContent = userPosts.length;
+        document.getElementById('likesCount').textContent = totalLikes;
+        document.getElementById('commentsCount').textContent = totalComments;
+
+        // Render user posts
+        function renderUserPosts() {
+            const userPostsContainer = document.getElementById('userPosts');
+            userPostsContainer.innerHTML = userPosts.map(post => `
+                <div class="post">
+                    <div class="post-header">
+                        <strong>${post.user}</strong>
+                        <small>${new Date(post.timestamp).toLocaleString()}</small>
+                    </div>
+                    <div class="post-content">
+                        ${post.content}
+                    </div>
+                    <div class="post-actions">
+                        <button class="like-btn ${post.likedBy.includes(currentUser) ? 'liked' : ''}">
+                            <i class="fas fa-heart"></i> ${post.likes}
+                        </button>
+                        <button class="comment-btn">
+                            <i class="fas fa-comment"></i> ${post.comments.length}
+                        </button>
+                    </div>
+                    <div class="comments">
+                        ${post.comments.map(comment => `
+                            <div class="comment">
+                                <strong>${comment.user}</strong>: ${comment.text}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        });
+
+        // Initial render
+        renderUserPosts();
+    </script>
+</body>
+</html> 
