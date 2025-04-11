@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Ya bidane</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            line-height: 1.5;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: #ffffff;
+            padding: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1877f2;
+        }
+
+        .nav-links a {
+            color: #65676b;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.25rem;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background-color: #f0f2f5;
+            color: #1877f2;
+        }
+
+        .nav-links a i {
+            margin-right: 0.5rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 100%;
+            margin: 60px auto 0;
+            padding: 0.5rem;
+        }
+
+        /* Create Post */
+        .create-post {
+            background-color: #ffffff;
+            padding: 0.75rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0.75rem;
+        }
+
+        .create-post textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            resize: none;
+            min-height: 100px;
+            font-size: 16px;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .upload-btn {
+            background-color: #e4e6eb;
+            color: #050505;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        button[type="submit"] {
+            background-color: #1877f2;
+            color: #ffffff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* Posts */
+        .post {
+            background-color: #ffffff;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .post-user {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .post-avatar, .comment-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #e4e6eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .post-avatar img, .comment-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .post-avatar i, .comment-avatar i {
+            color: #65676b;
+            font-size: 16px;
+        }
+
+        .post-content {
+            margin-bottom: 1rem;
+            word-wrap: break-word;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 250px;
+            margin: 0.5rem 0;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+        }
+
+        .post-actions button {
+            background: none;
+            border: none;
+            color: #65676b;
+            cursor: pointer;
+            padding: 0.5rem;
+            margin-right: 1rem;
+            font-size: 1rem;
+        }
+
+        .post-actions button.liked {
+            color: #e41e3f;
+        }
+
+        .post-actions button:hover {
+            color: #1877f2;
+        }
+
+        .post-actions button.liked:hover {
+            color: #e41e3f;
+        }
+
+        /* Comments */
+        .comments {
+            margin-top: 0.5rem;
+            border-top: 1px solid #dddfe2;
+            padding-top: 0.5rem;
+        }
+
+        .comment {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            background-color: #f0f2f5;
+            border-radius: 8px;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .comment-form input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #dddfe2;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .comment-form button {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Image Preview */
+        .image-preview {
+            display: none;
+            width: 100%;
+            height: 200px;
+            margin: 10px 0;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            border: 1px solid #dddfe2;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-brand {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: white;
+                display: flex;
+                justify-content: space-around;
+                padding: 0.5rem;
+                box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links a {
+                padding: 0.5rem;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                font-size: 12px;
+            }
+
+            .nav-links a i {
+                font-size: 1.2rem;
+                margin: 0 0 0.2rem 0;
+            }
+
+            .container {
+                margin-bottom: 60px;
+            }
+
+            .post-image {
+                height: 200px;
+            }
+
+            .post-actions button {
+                padding: 0.75rem;
+                min-width: 44px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.25rem;
+            }
+
+            .post {
+                border-radius: 0;
+                margin-bottom: 0.5rem;
+            }
+
+            .create-post {
+                border-radius: 0;
+            }
+        }
+
+        /* iOS Fixes */
+        @supports (-webkit-touch-callout: none) {
+            .container {
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+
+            .nav-links {
+                padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Ya bidane</div>
+        <div class="nav-links">
+            <a href="home.html" class="active"><i class="fas fa-home"></i> Home</a>
+            <a href="messages.html"><i class="fas fa-envelope"></i> Messages</a>
+            <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Create Post Section -->
+        <div class="create-post">
+            <form id="postForm">
+                <textarea placeholder="What's on your mind?" required></textarea>
+                <div class="post-actions">
+                    <input type="file" id="imageInput" accept="image/*" capture="environment">
+                    <label for="imageInput" class="upload-btn">
+                        <i class="fas fa-camera"></i> Take Photo
+                    </label>
+                    <div id="imagePreview" class="image-preview"></div>
+                    <button type="submit">Post</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Posts Feed -->
+        <div class="posts-feed" id="postsFeed">
+            <!-- Posts will be added here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        if (!localStorage.getItem('currentUser')) {
+            window.location.href = 'login.html';
+        }
+
+        // Sample posts data (in real app, this would come from a server)
+        let posts = [];
+
+        // Function to render posts
+        function renderPosts() {
+            const feed = document.getElementById('postsFeed');
+            const currentUser = localStorage.getItem('currentUser');
+            feed.innerHTML = posts.map(post => {
+                const userProfileImage = localStorage.getItem(`profileImage_${post.user}`);
+                return `
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">
+                            ${userProfileImage ? 
+                                `<img src="${userProfileImage}" alt="${post.user}" class="post-avatar">` :
+                                `<div class="post-avatar"><i class="fas fa-user"></i></div>`
+                            }
+                            <strong>${post.user}</strong>
+                        </div>
+                        <small>${new Date(post.timestamp).toLocaleString()}</small>
+                    </div>
+                    <div class="post-content">
+                        ${post.content}
+                        ${post.image ? `<div class="post-image" style="background-image: url(${post.image})"></div>` : ''}
+                    </div>
+                    <div class="post-actions">
+                        <button onclick="likePost(${post.id})" class="like-btn ${post.likedBy.includes(currentUser) ? 'liked' : ''}">
+                            <i class="fas fa-heart"></i> ${post.likes}
+                        </button>
+                        <button onclick="showComments(${post.id})" class="comment-btn">
+                            <i class="fas fa-comment"></i> ${post.comments.length}
+                        </button>
+                    </div>
+                    <div class="comments" id="comments-${post.id}">
+                        ${post.comments.map(comment => {
+                            const commentUserImage = localStorage.getItem(`profileImage_${comment.user}`);
+                            return `
+                            <div class="comment">
+                                <div class="comment-user">
+                                    ${commentUserImage ? 
+                                        `<img src="${commentUserImage}" alt="${comment.user}" class="comment-avatar">` :
+                                        `<div class="comment-avatar"><i class="fas fa-user"></i></div>`
+                                    }
+                                    <strong>${comment.user}</strong>: ${comment.text}
+                                </div>
+                            </div>
+                            `;
+                        }).join('')}
+                        <form onsubmit="addComment(event, ${post.id})" class="comment-form">
+                            <input type="text" placeholder="Add a comment..." required>
+                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // Like/Unlike a post
+        function likePost(postId) {
+            const post = posts.find(p => p.id === postId);
+            const currentUser = localStorage.getItem('currentUser');
+            
+            if (post) {
+                const userIndex = post.likedBy.indexOf(currentUser);
+                if (userIndex === -1) {
+                    // User hasn't liked the post yet - add like
+                    post.likes++;
+                    post.likedBy.push(currentUser);
+                } else {
+                    // User already liked the post - remove like
+                    post.likes--;
+                    post.likedBy.splice(userIndex, 1);
+                }
+                renderPosts();
+            }
+        }
+
+        // Add a comment
+        function addComment(event, postId) {
+            event.preventDefault();
+            const post = posts.find(p => p.id === postId);
+            const input = event.target.querySelector('input');
+            if (post && input.value) {
+                post.comments.push({
+                    user: localStorage.getItem('currentUser'),
+                    text: input.value
+                });
+                input.value = '';
+                renderPosts();
+            }
+        }
+
+        // Create a new post
+        document.getElementById('postForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const content = this.querySelector('textarea').value;
+            const imageInput = document.getElementById('imageInput');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            const newPost = {
+                id: Date.now(),
+                user: localStorage.getItem('currentUser'),
+                content: content,
+                likes: 0,
+                likedBy: [],
+                comments: [],
+                timestamp: new Date(),
+                image: imagePreview.style.backgroundImage ? imagePreview.style.backgroundImage.slice(5, -2) : null
+            };
+            
+            posts.unshift(newPost);
+            this.reset();
+            imagePreview.style.backgroundImage = '';
+            imagePreview.style.display = 'none';
+            renderPosts();
+        });
+
+        // Handle image upload and preview
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imagePreview = document.getElementById('imagePreview');
+                    imagePreview.style.backgroundImage = `url(${e.target.result})`;
+                    imagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        });
+
+        // Initial render
+        renderPosts();
+    </script>
+</body>
+</html> 
